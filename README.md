@@ -5,10 +5,10 @@
 </p>
 
 ## Descrição
-API em Java com Spring Framework para gerenciar os produtos, compras e vendas do Mercadinho Nordeste.
+API em Java com Spring & SpringBoot para gerenciar os produtos, compras e vendas do Mercadinho Nordeste.
 
 O Mercadinho Nordeste está localizado no Bosque Brasil, Macaíba-RN. Para facilitar a movimentação do caixa (feita com anotações em cadernos), o sistema foi pensado com o objetivo de registrar os produtos, as compras e vendas, gerando relatórios diários, semanais e mensais do faturamento.
 
 ## Tecnologias utilizadas
-- ``Java com Spring Boot 3``
+- ``Java com SpringBoot``
 - ``PostgreSQL``
