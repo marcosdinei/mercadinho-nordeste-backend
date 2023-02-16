@@ -1,4 +1,4 @@
-# Mercadinho Nordeste
+# Mercadinho Nordeste - Backend
 
 <p>
   <img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge"/>
@@ -12,4 +12,3 @@ O Mercadinho Nordeste está localizado no Bosque Brasil, Macaíba-RN. Para facil
 ## Tecnologias utilizadas
 - ``Java com Spring Boot 3``
 - ``PostgreSQL``
-- ``Angular 15``
