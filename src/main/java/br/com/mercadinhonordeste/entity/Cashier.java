@@ -15,11 +15,11 @@ public class Cashier {
     private String date;
 
     @Column(name = "valor_inicial")
-    private Double initial_value;
+    private Double initialValue;
 
     @Column(name = "valor_atual")
-    private Double current_value;
+    private Double currentValue;
 
     @Column(name = "em_andamento")
-    private Boolean in_progress;
+    private Boolean inProgress;
 }

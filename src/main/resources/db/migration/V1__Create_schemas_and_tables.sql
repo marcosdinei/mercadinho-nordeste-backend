@@ -9,8 +9,8 @@ create table if not exists caixa.caixa (
     id serial primary key,
     data varchar not null,
     valor_inicial real not null,
-    valor_atual real not null,
-    em_andamento boolean not null
+    valor_atual real,
+    em_andamento boolean
 );
 
 create table if not exists tipos.permissao (
@@ -40,7 +40,7 @@ create table if not exists pessoas.cliente (
     id serial primary key,
     nome varchar not null,
     cpf varchar not null,
-    valor_pendente real not null
+    valor_pendente real
 );
 
 create table if not exists produtos.produto (
@@ -88,9 +88,9 @@ create table if not exists compras.itens_comprados (
 
 create table if not exists vendas.venda (
     id serial primary key,
-    valor_total real not null,
+    valor_total real,
     data varchar not null,
-    forma_pagamento_id integer references tipos.forma_pagamento not null,
+    forma_pagamento_id integer references tipos.forma_pagamento,
     cliente_id integer references pessoas.cliente
 );
 

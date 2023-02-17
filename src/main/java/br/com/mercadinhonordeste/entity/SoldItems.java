@@ -30,5 +30,5 @@ public class SoldItems {
     private Double quantityProductBox;
 
     @Column(name = "valor_unitario")
-    private Double single_value;
+    private Double singleValue;
 }

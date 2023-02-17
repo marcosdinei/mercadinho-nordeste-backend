@@ -12,7 +12,7 @@ public class Sale {
     private Integer id;
 
     @Column(name = "valor_total")
-    private Double total_value;
+    private Double totalValue;
 
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "cliente_id")
