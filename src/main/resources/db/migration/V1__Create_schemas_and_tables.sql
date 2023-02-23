@@ -53,6 +53,7 @@ create table if not exists produtos.produto (
 create table if not exists produtos.caixa_produto (
     id serial primary key,
     produto_id integer references produtos.produto not null,
+    quantidade_produto real not null,
     preco_venda real not null,
     codigo varchar not null
 );
