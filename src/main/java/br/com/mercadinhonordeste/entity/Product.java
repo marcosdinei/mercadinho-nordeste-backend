@@ -14,7 +14,7 @@ public class Product {
     @Column(name = "descricao")
     private String description;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "categoria_id")
     private Category category;
 
