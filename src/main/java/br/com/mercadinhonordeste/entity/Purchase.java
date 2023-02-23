@@ -14,7 +14,7 @@ public class Purchase {
     @Column(name = "valor_total")
     private Double totalValue;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "fornecedor_id")
     private Supplier supplier;
 
