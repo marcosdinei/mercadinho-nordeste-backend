@@ -39,7 +39,6 @@ create table if not exists pessoas.usuario (
 create table if not exists pessoas.cliente (
     id serial primary key,
     nome varchar not null,
-    cpf varchar not null,
     valor_pendente real
 );
 

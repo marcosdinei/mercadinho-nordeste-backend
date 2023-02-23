@@ -47,11 +47,11 @@ public class CashierService {
         final Pagination pagination = Pagination.from(cashiers, pageable);
         return response.of(
                 HttpStatus.OK,
-                pagination.getTotalNumberOfElements().toString().concat(" caixas encontrados"),
+                pagination.getTotalNumberOfElements().toString().concat(" caixa(s) encontrado(s)"),
                 new PaginatedData<>(cashiers.getContent(), pagination));
     }
 
-    public Specification<Cashier> createSpecification(CashierCriteria criteria) {
+    private Specification<Cashier> createSpecification(CashierCriteria criteria) {
         Specification<Cashier> specification = Specification.where(null);
 
         if (criteria.getInitialDate() != null)

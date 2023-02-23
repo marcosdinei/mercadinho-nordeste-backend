@@ -14,9 +14,6 @@ public class Client {
     @Column(name = "nome")
     private String name;
 
-    @Column(name = "cpf")
-    private String cpf;
-
     @Column(name = "valor_pendente")
     private Double amountToPay;
 }
