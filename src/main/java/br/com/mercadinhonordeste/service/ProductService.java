@@ -1,10 +1,12 @@
 package br.com.mercadinhonordeste.service;
 
 import br.com.mercadinhonordeste.entity.Product;
+import br.com.mercadinhonordeste.entity.Stock;
 import br.com.mercadinhonordeste.model.ApiResponse;
 import br.com.mercadinhonordeste.model.PaginatedData;
 import br.com.mercadinhonordeste.model.Pagination;
 import br.com.mercadinhonordeste.repository.ProductRepository;
+import br.com.mercadinhonordeste.repository.StockRepository;
 import br.com.mercadinhonordeste.service.criteria.ProductCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,10 +23,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository repository;
+    private final StockRepository stockRepository;
 
     public ApiResponse<Product> saveProduct(Product product) {
         ApiResponse<Product> response = new ApiResponse<>();
-        return response.of(HttpStatus.CREATED, "Produto cadastrado com sucesso", repository.save(product));
+        Product productSaved = repository.save(product);
+        stockRepository.save(new Stock(null, productSaved, 0.0));
+        return response.of(HttpStatus.CREATED, "Produto cadastrado com sucesso", productSaved);
     }
 
     public ApiResponse<Product> updateProduct(Product product) {
