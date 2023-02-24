@@ -44,7 +44,7 @@ public class PurchaseService {
         final Pagination pagination = Pagination.from(purchases, pageable);
         return response.of(
                 HttpStatus.OK,
-                pagination.getTotalNumberOfElements().toString() + " compra(s) encontrada(s)",
+                pagination.getTotalNumberOfElements().toString().concat(" compra(s) encontrada(s)"),
                 new PaginatedData<>(purchases.getContent(), pagination));
     }
 

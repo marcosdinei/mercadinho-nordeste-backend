@@ -58,7 +58,7 @@ public class ProductService {
         final Pagination pagination = Pagination.from(products, pageable);
         return response.of(
                 HttpStatus.OK,
-                pagination.getTotalNumberOfElements().toString() + " produto(s) encontrado(s)",
+                pagination.getTotalNumberOfElements().toString().concat(" produto(s) encontrado(s)"),
                 new PaginatedData<>(products.getContent(), pagination));
     }
 
