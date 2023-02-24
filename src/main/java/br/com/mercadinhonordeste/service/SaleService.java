@@ -47,11 +47,11 @@ public class SaleService {
         Sale savedSale = repository.save(sale);
         savedSale.getItems().forEach(item -> {
             if (item.getProduct() != null) {
-                Stock stock = stockRepository.findByProduct(item.getProduct()).get(0);
+                Stock stock = stockRepository.findByProduct(item.getProduct()).get();
                 stock.setQuantity(stock.getQuantity() - item.getQuantityProduct());
                 stockRepository.save(stock);
             } else if (item.getProductBox() != null) {
-                Stock stock = stockRepository.findByProduct(item.getProductBox().getProduct()).get(0);
+                Stock stock = stockRepository.findByProduct(item.getProductBox().getProduct()).get();
                 stock.setQuantity(stock.getQuantity() - (item.getQuantityProductBox() * item.getProductBox().getQuantityProduct()));
                 stockRepository.save(stock);
             }
@@ -76,6 +76,18 @@ public class SaleService {
             client.setAmountToPay(client.getAmountToPay() - sale.get().getTotalValue());
             clientRepository.save(client);
         }
+
+        sale.get().getItems().forEach(item -> {
+            if (item.getProduct() != null) {
+                Stock stock = stockRepository.findByProduct(item.getProduct()).get();
+                stock.setQuantity(stock.getQuantity() + item.getQuantityProduct());
+                stockRepository.save(stock);
+            } else if (item.getProductBox() != null) {
+                Stock stock = stockRepository.findByProduct(item.getProductBox().getProduct()).get();
+                stock.setQuantity(stock.getQuantity() + (item.getQuantityProductBox() * item.getProductBox().getQuantityProduct()));
+                stockRepository.save(stock);
+            }
+        });
 
         repository.deleteById(id);
         return response.of(HttpStatus.OK, "Venda deletada com sucesso");

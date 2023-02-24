@@ -29,9 +29,9 @@ public class ProductController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Product>> getProductById(@PathVariable Integer id) {
-        ApiResponse<Product> response = service.getProductById(id);
+    @GetMapping("/{code}")
+    public ResponseEntity<ApiResponse<Product>> getProductByCode(@PathVariable String code) {
+        ApiResponse<Product> response = service.getProductByCode(code);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 

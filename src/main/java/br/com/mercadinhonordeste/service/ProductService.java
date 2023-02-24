@@ -39,11 +39,11 @@ public class ProductService {
         return response.of(HttpStatus.OK, "Produto atualizado com sucesso", repository.save(product));
     }
 
-    public ApiResponse<Product> getProductById(Integer id) {
+    public ApiResponse<Product> getProductByCode(String code) {
         ApiResponse<Product> response = new ApiResponse<>();
-        Optional<Product> product = repository.findById(id);
+        Optional<Product> product = repository.findByCode(code);
         if (product.isEmpty())
-            return response.of(HttpStatus.NOT_FOUND, "Produto não encontrado com o id informado");
+            return response.of(HttpStatus.NOT_FOUND, "Produto não encontrado com o código informado");
         return response.of(HttpStatus.OK, "Produto encontrado com sucesso", product.get());
     }
 

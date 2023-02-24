@@ -26,6 +26,14 @@ public class ProductBoxService {
         return response.of(HttpStatus.OK, "Caixa de produtos atualizada com sucesso", repository.save(productBox));
     }
 
+    public ApiResponse<ProductBox> getBoxByCode(String code) {
+        ApiResponse<ProductBox> response = new ApiResponse<>();
+        Optional<ProductBox> productBox = repository.findByCode(code);
+        if (productBox.isEmpty())
+            return response.of(HttpStatus.NOT_FOUND, "Nenhuma caixa de produtos encontrada com o código informado");
+        return response.of(HttpStatus.OK, "Caixa de produtos encontrada", productBox.get());
+    }
+
     public ApiResponse<ProductBox> getBoxByProductId(Integer productId) {
         ApiResponse<ProductBox> response = new ApiResponse<>();
         Optional<ProductBox> productBox = repository.findByProductId(productId);
