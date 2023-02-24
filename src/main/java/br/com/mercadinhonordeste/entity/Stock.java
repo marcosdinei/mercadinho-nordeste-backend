@@ -3,9 +3,11 @@ package br.com.mercadinhonordeste.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(schema = "produtos", name = "estoque")
 public class Stock {

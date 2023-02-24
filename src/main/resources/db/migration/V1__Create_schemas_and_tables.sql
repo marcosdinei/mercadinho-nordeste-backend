@@ -78,7 +78,7 @@ create table if not exists compras.compra (
 
 create table if not exists compras.itens_comprados (
     id serial primary key,
-    compra_id integer references compras.compra not null,
+    compra_id integer references compras.compra,
     produto_id integer references produtos.produto,
     caixa_produto_id integer references produtos.caixa_produto,
     quantidade_produto real,
@@ -96,7 +96,7 @@ create table if not exists vendas.venda (
 
 create table if not exists vendas.itens_vendidos (
     id serial primary key,
-    venda_id integer references vendas.venda not null,
+    venda_id integer references vendas.venda,
     produto_id integer references produtos.produto,
     caixa_produto_id integer references produtos.caixa_produto,
     quantidade_produto real,

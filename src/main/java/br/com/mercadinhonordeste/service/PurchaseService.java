@@ -1,10 +1,12 @@
 package br.com.mercadinhonordeste.service;
 
 import br.com.mercadinhonordeste.entity.Purchase;
+import br.com.mercadinhonordeste.entity.Stock;
 import br.com.mercadinhonordeste.model.ApiResponse;
 import br.com.mercadinhonordeste.model.PaginatedData;
 import br.com.mercadinhonordeste.model.Pagination;
 import br.com.mercadinhonordeste.repository.PurchaseRepository;
+import br.com.mercadinhonordeste.repository.StockRepository;
 import br.com.mercadinhonordeste.service.criteria.PurchaseCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,10 +21,23 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PurchaseService {
     private final PurchaseRepository repository;
+    private final StockRepository stockRepository;
 
     public ApiResponse<Purchase> savePurchase(Purchase purchase) {
         ApiResponse<Purchase> response = new ApiResponse<>();
-        return response.of(HttpStatus.CREATED, "Compra cadastrada com sucesso", repository.save(purchase));
+        Purchase savedPurchase = repository.save(purchase);
+        savedPurchase.getItems().forEach(item -> {
+            if (item.getProduct() != null) {
+                Stock stock = stockRepository.findByProduct(item.getProduct()).get(0);
+                stock.setQuantity(stock.getQuantity() + item.getQuantityProduct());
+                stockRepository.save(stock);
+            } else if (item.getProductBox() != null) {
+                Stock stock = stockRepository.findByProduct(item.getProductBox().getProduct()).get(0);
+                stock.setQuantity(stock.getQuantity() + (item.getQuantityProductBox() * item.getProductBox().getQuantityProduct()));
+                stockRepository.save(stock);
+            }
+        });
+        return response.of(HttpStatus.CREATED, "Compra cadastrada com sucesso", savedPurchase);
     }
 
     public ApiResponse<?> deletePurchase(Integer id) {

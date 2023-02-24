@@ -1,7 +1,10 @@
 package br.com.mercadinhonordeste.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -24,4 +27,8 @@ public class Sale {
 
     @Column(name = "data")
     private String date;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sale", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<SoldItems> items;
 }

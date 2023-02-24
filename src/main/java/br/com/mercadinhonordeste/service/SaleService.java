@@ -3,12 +3,14 @@ package br.com.mercadinhonordeste.service;
 import br.com.mercadinhonordeste.entity.Cashier;
 import br.com.mercadinhonordeste.entity.Client;
 import br.com.mercadinhonordeste.entity.Sale;
+import br.com.mercadinhonordeste.entity.Stock;
 import br.com.mercadinhonordeste.model.ApiResponse;
 import br.com.mercadinhonordeste.model.PaginatedData;
 import br.com.mercadinhonordeste.model.Pagination;
 import br.com.mercadinhonordeste.repository.CashierRepository;
 import br.com.mercadinhonordeste.repository.ClientRepository;
 import br.com.mercadinhonordeste.repository.SaleRepository;
+import br.com.mercadinhonordeste.repository.StockRepository;
 import br.com.mercadinhonordeste.service.criteria.SaleCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,7 @@ public class SaleService {
     private final SaleRepository repository;
     private final CashierRepository cashierRepository;
     private final ClientRepository clientRepository;
+    private final StockRepository stockRepository;
 
     public ApiResponse<Sale> saveSale(Sale sale) {
         ApiResponse<Sale> response = new ApiResponse<>();
@@ -41,7 +44,20 @@ public class SaleService {
             clientRepository.save(client);
         }
 
-        return response.of(HttpStatus.CREATED, "Venda cadastrada com sucesso", repository.save(sale));
+        Sale savedSale = repository.save(sale);
+        savedSale.getItems().forEach(item -> {
+            if (item.getProduct() != null) {
+                Stock stock = stockRepository.findByProduct(item.getProduct()).get(0);
+                stock.setQuantity(stock.getQuantity() - item.getQuantityProduct());
+                stockRepository.save(stock);
+            } else if (item.getProductBox() != null) {
+                Stock stock = stockRepository.findByProduct(item.getProductBox().getProduct()).get(0);
+                stock.setQuantity(stock.getQuantity() - (item.getQuantityProductBox() * item.getProductBox().getQuantityProduct()));
+                stockRepository.save(stock);
+            }
+        });
+
+        return response.of(HttpStatus.CREATED, "Venda cadastrada com sucesso", savedSale);
     }
 
     public ApiResponse<?> deleteSale(Integer id) {
