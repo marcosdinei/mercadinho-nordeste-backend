@@ -29,11 +29,11 @@ public class CashierService {
         return response.of(HttpStatus.CREATED, "Caixa iniciado", repository.save(cashier));
     }
 
-    public ApiResponse<Cashier> closeCashier(Cashier cashier) {
+    public ApiResponse<Cashier> updateCashier(Cashier cashier) {
         ApiResponse<Cashier> response = new ApiResponse<>();
         if (!repository.existsById(cashier.getId()))
             return response.of(HttpStatus.NOT_FOUND, "Caixa não encontrado");
-        return response.of(HttpStatus.OK, "Caixa encerrado com sucesso", repository.save(cashier));
+        return response.of(HttpStatus.OK, "Caixa atualizado com sucesso", repository.save(cashier));
     }
 
     public ApiResponse<PaginatedData<Cashier>> listCashiers(CashierCriteria criteria, Pageable pageable) {

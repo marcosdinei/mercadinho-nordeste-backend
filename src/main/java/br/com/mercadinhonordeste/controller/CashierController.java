@@ -24,8 +24,8 @@ public class CashierController {
     }
 
     @PutMapping()
-    public ResponseEntity<ApiResponse<Cashier>> closeCashier(@RequestBody Cashier cashier) {
-        ApiResponse<Cashier> response = service.closeCashier(cashier);
+    public ResponseEntity<ApiResponse<Cashier>> updateCashier(@RequestBody Cashier cashier) {
+        ApiResponse<Cashier> response = service.updateCashier(cashier);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
