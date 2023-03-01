@@ -27,7 +27,7 @@ O Mercadinho Nordeste está localizado no Bosque Brasil, Macaíba-RN. Para facil
 - [Maven 3](https://maven.apache.org/download.cgi)
 
 ### Build
-Deve ser criado um banco de dados db_mercadinhonordeste no PostgreSQL. Para realizar o _build_, navegue até a pasta raiz do projeto e utilize o comando ``mvn clean package``.
+Deve ser criado um banco de dados ``db_mercadinhonordeste`` no PostgreSQL. Para realizar o _build_, navegue até a pasta raiz do projeto e utilize o comando ``mvn clean package``.
 
 ### Inicialização da aplicação
 Após o processo de _build_ ser finalizado, ainda na pasta raiz do projeto utilize o comando ``java -jar target/mercadinhonordeste-0.0.1-SNAPSHOT.jar``.
