@@ -20,5 +20,17 @@ O Mercadinho Nordeste está localizado no Bosque Brasil, Macaíba-RN. Para facil
 ## Diagrama de Classes
 [Clique aqui](https://lucid.app/lucidchart/b226f064-d01c-4728-a9ab-161c867ebfa0/edit?viewport_loc=-243%2C58%2C2476%2C1216%2C0_0&invitationId=inv_3502613d-7d40-42fc-a0e9-3c0a8f9a143c) para visualizar o diagrama.
 
-## Swagger UI
-Para visualizar a documentação da API, acessar ``http://localhost:8080/api/swagger-ui/index.html``
+## Como inicializar a aplicação
+### Requisitos
+- [Java 19](https://www.oracle.com/java/technologies/javase/jdk19-archive-downloads.html)
+- [PostgreSQL](https://www.postgresql.org/download/)
+- [Maven 3](https://maven.apache.org/download.cgi)
+
+### Build
+Deve ser criado um banco de dados db_mercadinhonordeste no PostgreSQL. Para realizar o _build_, navegue até a pasta raiz do projeto e utilize o comando ``mvn clean package``.
+
+### Inicialização da aplicação
+Após o processo de _build_ ser finalizado, ainda na pasta raiz do projeto utilize o comando ``java -jar target/mercadinhonordeste-0.0.1-SNAPSHOT.jar``.
+
+## Documentação
+Esse projeto possui documentação com SwaggerUI. Para visualizar, acessar ``{URL}:8080/api/swagger-ui/index.html`` (quando a aplicação estiver rodando localmente, URL = localhost).
