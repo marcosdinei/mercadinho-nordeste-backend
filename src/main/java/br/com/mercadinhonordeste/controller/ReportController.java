@@ -17,8 +17,7 @@ public class ReportController {
     private final ReportService service;
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<Report>> getReport(
-            @RequestParam String initialDate, @RequestParam String finalDate) {
+    public ResponseEntity<ApiResponse<Report>> getReport(String initialDate, String finalDate) {
         ApiResponse<Report> response = service.getReport(initialDate, finalDate);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
