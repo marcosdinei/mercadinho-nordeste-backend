@@ -6,5 +6,3 @@ insert into tipos.forma_pagamento (nome)
             ('Fiado'),
             ('Para casa');
 
-insert into tipos.permissao (nome)
-    values ('Administrador');

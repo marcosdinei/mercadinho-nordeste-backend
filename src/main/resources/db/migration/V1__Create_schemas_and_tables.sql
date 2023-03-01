@@ -2,7 +2,6 @@ create schema if not exists tipos;
 create schema if not exists produtos;
 create schema if not exists compras;
 create schema if not exists vendas;
-create schema if not exists pessoas;
 create schema if not exists caixa;
 
 create table if not exists caixa.caixa (
@@ -13,11 +12,6 @@ create table if not exists caixa.caixa (
     em_andamento boolean
 );
 
-create table if not exists tipos.permissao (
-    id serial primary key,
-    nome varchar not null
-);
-
 create table if not exists tipos.categoria (
     id serial primary key,
     nome varchar not null
@@ -26,20 +20,6 @@ create table if not exists tipos.categoria (
 create table if not exists tipos.forma_pagamento (
     id serial primary key,
     nome varchar not null
-);
-
-create table if not exists pessoas.usuario (
-    id serial primary key,
-    login varchar not null,
-    senha varchar not null,
-    nome varchar not null,
-    permissao_id integer references tipos.permissao not null
-);
-
-create table if not exists pessoas.cliente (
-    id serial primary key,
-    nome varchar not null,
-    valor_pendente real
 );
 
 create table if not exists produtos.produto (
@@ -86,12 +66,27 @@ create table if not exists compras.itens_comprados (
     valor_unitario real not null
 );
 
+create table if not exists vendas.cliente (
+    id serial primary key,
+    nome varchar not null,
+    valor_pendente real
+);
+
+create table if not exists vendas.pagamento_cliente(
+    id serial primary key,
+    cliente_id integer references vendas.cliente not null,
+    data varchar not null,
+    valor_pago real not null
+);
+
 create table if not exists vendas.venda (
     id serial primary key,
     valor_total real,
+    desconto real,
+    valor_pago real,
     data varchar not null,
     forma_pagamento_id integer references tipos.forma_pagamento,
-    cliente_id integer references pessoas.cliente
+    cliente_id integer references vendas.cliente
 );
 
 create table if not exists vendas.itens_vendidos (
