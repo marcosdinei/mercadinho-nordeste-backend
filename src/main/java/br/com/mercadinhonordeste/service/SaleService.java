@@ -36,11 +36,11 @@ public class SaleService {
 
         if (sale.getPayment().getId().equals(4)){
             Cashier activeCashier = cashierRepository.findByInProgress(true).get(0);
-            activeCashier.setCurrentValue(activeCashier.getCurrentValue() + sale.getTotalValue());
+            activeCashier.setCurrentValue(activeCashier.getCurrentValue() + sale.getValuePaid());
             cashierRepository.save(activeCashier);
         } else if (sale.getPayment().getId().equals(5)) {
             Client client = clientRepository.findById(sale.getClient().getId()).get();
-            client.setAmountToPay(client.getAmountToPay() + sale.getTotalValue());
+            client.setAmountToPay(client.getAmountToPay() + sale.getValuePaid());
             clientRepository.save(client);
         }
 
@@ -69,11 +69,11 @@ public class SaleService {
 
         if (sale.get().getPayment().getId().equals(4)) {
             Cashier activeCashier = cashierRepository.findByInProgress(true).get(0);
-            activeCashier.setCurrentValue(activeCashier.getCurrentValue() - sale.get().getTotalValue());
+            activeCashier.setCurrentValue(activeCashier.getCurrentValue() - sale.get().getValuePaid());
             cashierRepository.save(activeCashier);
         } else if (sale.get().getPayment().getId().equals(5)) {
             Client client = clientRepository.findById(sale.get().getClient().getId()).get();
-            client.setAmountToPay(client.getAmountToPay() - sale.get().getTotalValue());
+            client.setAmountToPay(client.getAmountToPay() - sale.get().getValuePaid());
             clientRepository.save(client);
         }
 

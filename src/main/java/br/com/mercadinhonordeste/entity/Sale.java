@@ -17,6 +17,12 @@ public class Sale {
     @Column(name = "valor_total")
     private Double totalValue;
 
+    @Column(name = "desconto")
+    private Double discount;
+
+    @Column(name = "valor_pago")
+    private Double valuePaid;
+
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "cliente_id")
     private Client client;

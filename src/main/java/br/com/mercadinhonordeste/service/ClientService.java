@@ -1,9 +1,11 @@
 package br.com.mercadinhonordeste.service;
 
 import br.com.mercadinhonordeste.entity.Client;
+import br.com.mercadinhonordeste.entity.ClientPayment;
 import br.com.mercadinhonordeste.model.ApiResponse;
 import br.com.mercadinhonordeste.model.PaginatedData;
 import br.com.mercadinhonordeste.model.Pagination;
+import br.com.mercadinhonordeste.repository.ClientPaymentRepository;
 import br.com.mercadinhonordeste.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClientService {
     private final ClientRepository repository;
+    private final ClientPaymentRepository paymentRepository;
 
     public ApiResponse<Client> saveClient(Client client) {
         ApiResponse<Client> response = new ApiResponse<>();
@@ -30,6 +33,20 @@ public class ClientService {
         if (!repository.existsById(client.getId()))
             return response.of(HttpStatus.NOT_FOUND, "Cliente não encontrado");
         return response.of(HttpStatus.OK, "Cliente atualizado com sucesso", repository.save(client));
+    }
+
+    public ApiResponse<ClientPayment> savePayment(ClientPayment payment) {
+        ApiResponse<ClientPayment> response = new ApiResponse<>();
+
+        Optional<Client> client = repository.findById(payment.getClient().getId());
+        if (client.isEmpty())
+            return response.of(HttpStatus.NOT_FOUND, "Cliente não encontrado com o id informado");
+
+        Client clientToSave = client.get();
+        clientToSave.setAmountToPay(clientToSave.getAmountToPay() - payment.getAmountPaid());
+        payment.setClient(repository.save(clientToSave));
+
+        return response.of(HttpStatus.CREATED, "Pagamento registrado com sucesso", paymentRepository.save(payment));
     }
 
     public ApiResponse<PaginatedData<Client>> listClients(String name, Pageable pageable) {

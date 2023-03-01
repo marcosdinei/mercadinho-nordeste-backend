@@ -13,4 +13,5 @@ public class Report {
     private Double spent;
     private Double revenue;
     private Double balance;
+    private Double toReceive;
 }

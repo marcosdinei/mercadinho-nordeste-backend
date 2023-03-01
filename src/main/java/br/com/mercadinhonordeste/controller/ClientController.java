@@ -1,6 +1,7 @@
 package br.com.mercadinhonordeste.controller;
 
 import br.com.mercadinhonordeste.entity.Client;
+import br.com.mercadinhonordeste.entity.ClientPayment;
 import br.com.mercadinhonordeste.model.ApiResponse;
 import br.com.mercadinhonordeste.model.PaginatedData;
 import br.com.mercadinhonordeste.service.ClientService;
@@ -25,6 +26,12 @@ public class ClientController {
     @PutMapping()
     public ResponseEntity<ApiResponse<Client>> updateClient(@RequestBody Client client) {
         ApiResponse<Client> response = service.updateClient(client);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @PostMapping("/payment")
+    public ResponseEntity<ApiResponse<ClientPayment>> savePayment(@RequestBody ClientPayment payment) {
+        ApiResponse<ClientPayment> response = service.savePayment(payment);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
