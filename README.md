@@ -6,7 +6,7 @@
 ## Descrição
 API em Java com Spring & SpringBoot para gerenciar os produtos, compras e vendas do Mercadinho Nordeste e que será consumida por uma [aplicação Angular](https://github.com/marcosdinei/mercadinho-nordeste-frontend).
 
-O Mercadinho Nordeste está localizado no Bosque Brasil, Macaíba-RN. Para facilitar a movimentação do caixa (feita com anotações em cadernos), o sistema foi pensado com o objetivo de registrar os produtos, compras e vendas, além de gerar relatórios diários, semanais e mensais de toda a movimentação.
+O Mercadinho Nordeste está localizado no Bosque Brasil, Macaíba-RN. Para facilitar a movimentação do caixa (feita com anotações em cadernos), o sistema foi pensado com o objetivo de registrar os produtos, compras e vendas, além de gerar relatórios periódicos de toda a movimentação.
 
 ## Dependências
 - ``SpringData JPA``
