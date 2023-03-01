@@ -10,11 +10,15 @@ O Mercadinho Nordeste está localizado no Bosque Brasil, Macaíba-RN. Para facil
 
 ## Dependências
 - ``SpringData JPA``
-- ``Spring Security``
 - ``Spring Web``
+- ``Validation``
+- ``Spring Doc``
 - ``PostgreSQL``
 - ``Flyway``
 - ``Lombok``
 
 ## Diagrama de Classes
-[Clique aqui](https://lucid.app/lucidchart/b226f064-d01c-4728-a9ab-161c867ebfa0/edit?viewport_loc=-243%2C58%2C2476%2C1216%2C0_0&invitationId=inv_3502613d-7d40-42fc-a0e9-3c0a8f9a143c) para visualizar.
+[Clique aqui](https://lucid.app/lucidchart/b226f064-d01c-4728-a9ab-161c867ebfa0/edit?viewport_loc=-243%2C58%2C2476%2C1216%2C0_0&invitationId=inv_3502613d-7d40-42fc-a0e9-3c0a8f9a143c) para visualizar o diagrama.
+
+## Swagger UI
+Para visualizar a documentação da API, acessar ``http://localhost:8080/api/swagger-ui/index.html``
