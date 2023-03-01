@@ -10,7 +10,6 @@ O Mercadinho Nordeste está localizado no Bosque Brasil, Macaíba-RN. Para facil
 
 ## Dependências
 - ``SpringData JPA``
-- ``Spring Security``
 - ``Spring Web``
 - ``Validation``
 - ``Spring Doc``
