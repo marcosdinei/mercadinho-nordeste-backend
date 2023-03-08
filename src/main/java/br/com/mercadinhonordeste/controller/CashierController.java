@@ -1,10 +1,10 @@
 package br.com.mercadinhonordeste.controller;
 
-import br.com.mercadinhonordeste.entity.Cashier;
+import br.com.mercadinhonordeste.entity.Cash;
 import br.com.mercadinhonordeste.model.ApiResponse;
 import br.com.mercadinhonordeste.model.PaginatedData;
-import br.com.mercadinhonordeste.service.CashierService;
-import br.com.mercadinhonordeste.service.criteria.CashierCriteria;
+import br.com.mercadinhonordeste.service.CashService;
+import br.com.mercadinhonordeste.service.criteria.CashCriteria;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,24 +15,24 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("cashier")
 public class CashierController {
-    private final CashierService service;
+    private final CashService service;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse<Cashier>> initCashier(@RequestBody Cashier cashier) {
-        ApiResponse<Cashier> response = service.initCashier(cashier);
+    public ResponseEntity<ApiResponse<Cash>> initCashier(@RequestBody Cash cashier) {
+        ApiResponse<Cash> response = service.initCashier(cashier);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @PutMapping()
-    public ResponseEntity<ApiResponse<Cashier>> updateCashier(@RequestBody Cashier cashier) {
-        ApiResponse<Cashier> response = service.updateCashier(cashier);
+    public ResponseEntity<ApiResponse<Cash>> updateCashier(@RequestBody Cash cashier) {
+        ApiResponse<Cash> response = service.updateCashier(cashier);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<PaginatedData<Cashier>>> listCashiers(
-            CashierCriteria criteria, @PageableDefault() Pageable pageable) {
-        ApiResponse<PaginatedData<Cashier>> response = service.listCashiers(criteria, pageable);
+    public ResponseEntity<ApiResponse<PaginatedData<Cash>>> listCashiers(
+            CashCriteria criteria, @PageableDefault() Pageable pageable) {
+        ApiResponse<PaginatedData<Cash>> response = service.listCashiers(criteria, pageable);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 }

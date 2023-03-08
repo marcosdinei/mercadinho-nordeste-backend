@@ -1,13 +1,13 @@
 package br.com.mercadinhonordeste.service;
 
-import br.com.mercadinhonordeste.entity.Cashier;
+import br.com.mercadinhonordeste.entity.Cash;
 import br.com.mercadinhonordeste.entity.Client;
 import br.com.mercadinhonordeste.entity.Sale;
 import br.com.mercadinhonordeste.entity.Stock;
 import br.com.mercadinhonordeste.model.ApiResponse;
 import br.com.mercadinhonordeste.model.PaginatedData;
 import br.com.mercadinhonordeste.model.Pagination;
-import br.com.mercadinhonordeste.repository.CashierRepository;
+import br.com.mercadinhonordeste.repository.CashRepository;
 import br.com.mercadinhonordeste.repository.ClientRepository;
 import br.com.mercadinhonordeste.repository.SaleRepository;
 import br.com.mercadinhonordeste.repository.StockRepository;
@@ -27,7 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SaleService {
     private final SaleRepository repository;
-    private final CashierRepository cashierRepository;
+    private final CashRepository cashRepository;
     private final ClientRepository clientRepository;
     private final StockRepository stockRepository;
 
@@ -35,9 +35,9 @@ public class SaleService {
         ApiResponse<Sale> response = new ApiResponse<>();
 
         if (sale.getPayment().getId().equals(4)){
-            Cashier activeCashier = cashierRepository.findByInProgress(true).get(0);
-            activeCashier.setCurrentValue(activeCashier.getCurrentValue() + sale.getValuePaid());
-            cashierRepository.save(activeCashier);
+            Cash activeCash = cashRepository.findByInProgress(true).get(0);
+            activeCash.setCurrentValue(activeCash.getCurrentValue() + sale.getValuePaid());
+            cashRepository.save(activeCash);
         } else if (sale.getPayment().getId().equals(5)) {
             Client client = clientRepository.findById(sale.getClient().getId()).get();
             client.setAmountToPay(client.getAmountToPay() + sale.getValuePaid());
@@ -68,9 +68,9 @@ public class SaleService {
             return response.of(HttpStatus.NOT_FOUND, "Venda não encontrada com o id informado");
 
         if (sale.get().getPayment().getId().equals(4)) {
-            Cashier activeCashier = cashierRepository.findByInProgress(true).get(0);
-            activeCashier.setCurrentValue(activeCashier.getCurrentValue() - sale.get().getValuePaid());
-            cashierRepository.save(activeCashier);
+            Cash activeCash = cashRepository.findByInProgress(true).get(0);
+            activeCash.setCurrentValue(activeCash.getCurrentValue() - sale.get().getValuePaid());
+            cashRepository.save(activeCash);
         } else if (sale.get().getPayment().getId().equals(5)) {
             Client client = clientRepository.findById(sale.get().getClient().getId()).get();
             client.setAmountToPay(client.getAmountToPay() - sale.get().getValuePaid());
