@@ -15,6 +15,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CashService {
@@ -41,12 +43,12 @@ public class CashService {
                 pageable.getPageSize(),
                 Sort.by(Sort.Direction.DESC, "date")
         );
-        Page<Cash> cash = repository.findAll(createSpecification(criteria), pageable);
-        final Pagination pagination = Pagination.from(cash, pageable);
+        Page<Cash> cashPage = repository.findAll(createSpecification(criteria), pageable);
+        final Pagination pagination = Pagination.from(cashPage, pageable);
         return response.of(
                 HttpStatus.OK,
                 pagination.getTotalNumberOfElements().toString().concat(" caixa(s) encontrado(s)"),
-                new PaginatedData<>(cash.getContent(), pagination));
+                new PaginatedData<>(cashPage.getContent(), pagination));
     }
 
     private Specification<Cash> createSpecification(CashCriteria criteria) {

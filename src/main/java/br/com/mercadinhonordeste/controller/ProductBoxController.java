@@ -31,8 +31,8 @@ public class ProductBoxController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @GetMapping()
-    public ResponseEntity<ApiResponse<ProductBox>> getBoxByProductId(Integer productId) {
+    @GetMapping("/{productId}")
+    public ResponseEntity<ApiResponse<ProductBox>> getBoxByProductId(@PathVariable Integer productId) {
         ApiResponse<ProductBox> response = service.getBoxByProductId(productId);
         return ResponseEntity.status(response.getStatus()).body(response);
     }

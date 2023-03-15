@@ -1,8 +1,10 @@
 package br.com.mercadinhonordeste.service;
 
+import br.com.mercadinhonordeste.entity.Product;
 import br.com.mercadinhonordeste.entity.ProductBox;
 import br.com.mercadinhonordeste.model.ApiResponse;
 import br.com.mercadinhonordeste.repository.ProductBoxRepository;
+import br.com.mercadinhonordeste.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductBoxService {
     private final ProductBoxRepository repository;
+    private final ProductRepository productRepository;
 
     public ApiResponse<ProductBox> saveBox(ProductBox productBox) {
         ApiResponse<ProductBox> response = new ApiResponse<>();
-        return response.of(HttpStatus.CREATED, "Caixa de produtos cadastrada com sucesso", repository.save(productBox));
+        ProductBox boxSaved = repository.save(productBox);
+        Product product = productRepository.findById(boxSaved.getProduct().getId()).get();
+        product.setBox(boxSaved);
+        productRepository.save(product);
+        return response.of(HttpStatus.CREATED, "Caixa de produtos cadastrada com sucesso", boxSaved);
     }
 
     public ApiResponse<ProductBox> updateBox(ProductBox productBox) {

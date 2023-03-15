@@ -1,5 +1,6 @@
 package br.com.mercadinhonordeste.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -23,4 +24,9 @@ public class Product {
 
     @Column(name = "codigo")
     private String code;
+
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "caixa_produto_id")
+    @JsonManagedReference
+    private ProductBox box;
 }
