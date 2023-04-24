@@ -25,8 +25,7 @@ public class Product {
     @Column(name = "codigo")
     private String code;
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
-    @JoinColumn(name = "caixa_produto_id")
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "product")
     @JsonManagedReference
     private ProductBox box;
 }

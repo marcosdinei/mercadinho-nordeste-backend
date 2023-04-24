@@ -2,9 +2,11 @@ package br.com.mercadinhonordeste.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter @Setter @NoArgsConstructor
 @Entity
 @Table(schema = "produtos", name = "caixa_produto")
 public class ProductBox {
@@ -12,7 +14,7 @@ public class ProductBox {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "produto_id")
     @JsonBackReference
     private Product product;

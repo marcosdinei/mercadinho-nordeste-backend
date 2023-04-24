@@ -22,21 +22,21 @@ import java.util.List;
 public class CashService {
     private final CashRepository repository;
 
-    public ApiResponse<Cash> initCashier(Cash cash) {
+    public ApiResponse<Cash> initCash(Cash cash) {
         ApiResponse<Cash> response = new ApiResponse<>();
         cash.setCurrentValue(cash.getInitialValue());
         cash.setInProgress(true);
         return response.of(HttpStatus.CREATED, "Caixa iniciado", repository.save(cash));
     }
 
-    public ApiResponse<Cash> updateCashier(Cash cash) {
+    public ApiResponse<Cash> updateCash(Cash cash) {
         ApiResponse<Cash> response = new ApiResponse<>();
         if (!repository.existsById(cash.getId()))
             return response.of(HttpStatus.NOT_FOUND, "Caixa não encontrado");
         return response.of(HttpStatus.OK, "Caixa atualizado com sucesso", repository.save(cash));
     }
 
-    public ApiResponse<PaginatedData<Cash>> listCashiers(CashCriteria criteria, Pageable pageable) {
+    public ApiResponse<PaginatedData<Cash>> listCashs(CashCriteria criteria, Pageable pageable) {
         ApiResponse<PaginatedData<Cash>> response = new ApiResponse<>();
         pageable = PageRequest.of(
                 pageable.getPageNumber(),

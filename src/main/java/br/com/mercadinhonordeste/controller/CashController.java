@@ -13,26 +13,26 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("cashier")
-public class CashierController {
+@RequestMapping("cash")
+public class CashController {
     private final CashService service;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse<Cash>> initCashier(@RequestBody Cash cashier) {
-        ApiResponse<Cash> response = service.initCashier(cashier);
+    public ResponseEntity<ApiResponse<Cash>> initCash(@RequestBody Cash cash) {
+        ApiResponse<Cash> response = service.initCash(cash);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @PutMapping()
-    public ResponseEntity<ApiResponse<Cash>> updateCashier(@RequestBody Cash cashier) {
-        ApiResponse<Cash> response = service.updateCashier(cashier);
+    public ResponseEntity<ApiResponse<Cash>> updateCash(@RequestBody Cash cash) {
+        ApiResponse<Cash> response = service.updateCash(cash);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<PaginatedData<Cash>>> listCashiers(
+    public ResponseEntity<ApiResponse<PaginatedData<Cash>>> listCashs(
             CashCriteria criteria, @PageableDefault() Pageable pageable) {
-        ApiResponse<PaginatedData<Cash>> response = service.listCashiers(criteria, pageable);
+        ApiResponse<PaginatedData<Cash>> response = service.listCashs(criteria, pageable);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 }

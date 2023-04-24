@@ -1,10 +1,12 @@
 package br.com.mercadinhonordeste.service;
 
 import br.com.mercadinhonordeste.entity.Product;
+import br.com.mercadinhonordeste.entity.ProductBox;
 import br.com.mercadinhonordeste.entity.Stock;
 import br.com.mercadinhonordeste.model.ApiResponse;
 import br.com.mercadinhonordeste.model.PaginatedData;
 import br.com.mercadinhonordeste.model.Pagination;
+import br.com.mercadinhonordeste.repository.ProductBoxRepository;
 import br.com.mercadinhonordeste.repository.ProductRepository;
 import br.com.mercadinhonordeste.repository.StockRepository;
 import br.com.mercadinhonordeste.service.criteria.ProductCriteria;
@@ -24,6 +26,7 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository repository;
     private final StockRepository stockRepository;
+    private final ProductBoxRepository boxRepository;
 
     public ApiResponse<Product> saveProduct(Product product) {
         ApiResponse<Product> response = new ApiResponse<>();
@@ -34,8 +37,16 @@ public class ProductService {
 
     public ApiResponse<Product> updateProduct(Product product) {
         ApiResponse<Product> response = new ApiResponse<>();
+
         if (!repository.existsById(product.getId()))
             return response.of(HttpStatus.NOT_FOUND, "Produto não encontrado com o id informado");
+
+        if (product.getBox() == null) {
+            Optional<ProductBox> box = boxRepository.findByProductId(product.getId());
+            if (box.isPresent())
+                boxRepository.delete(box.get());
+        }
+
         return response.of(HttpStatus.OK, "Produto atualizado com sucesso", repository.save(product));
     }
 
