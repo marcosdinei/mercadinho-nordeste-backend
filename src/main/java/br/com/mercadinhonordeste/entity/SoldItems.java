@@ -25,11 +25,8 @@ public class SoldItems {
     @JoinColumn(name = "caixa_produto_id")
     private ProductBox productBox;
 
-    @Column(name = "quantidade_produto")
-    private Double quantityProduct;
-
-    @Column(name = "quantidade_caixa")
-    private Double quantityProductBox;
+    @Column(name = "quantidade_item")
+    private Double quantityItem;
 
     @Column(name = "valor_unitario")
     private Double singleValue;

@@ -48,11 +48,11 @@ public class SaleService {
         savedSale.getItems().forEach(item -> {
             if (item.getProduct() != null) {
                 Stock stock = stockRepository.findByProduct(item.getProduct()).get();
-                stock.setQuantity(stock.getQuantity() - item.getQuantityProduct());
+                stock.setQuantity(stock.getQuantity() - item.getQuantityItem());
                 stockRepository.save(stock);
             } else if (item.getProductBox() != null) {
                 Stock stock = stockRepository.findByProduct(item.getProductBox().getProduct()).get();
-                stock.setQuantity(stock.getQuantity() - (item.getQuantityProductBox() * item.getProductBox().getQuantityProduct()));
+                stock.setQuantity(stock.getQuantity() - (item.getQuantityItem() * item.getProductBox().getQuantityProduct()));
                 stockRepository.save(stock);
             }
         });
@@ -80,11 +80,11 @@ public class SaleService {
         sale.get().getItems().forEach(item -> {
             if (item.getProduct() != null) {
                 Stock stock = stockRepository.findByProduct(item.getProduct()).get();
-                stock.setQuantity(stock.getQuantity() + item.getQuantityProduct());
+                stock.setQuantity(stock.getQuantity() + item.getQuantityItem());
                 stockRepository.save(stock);
             } else if (item.getProductBox() != null) {
                 Stock stock = stockRepository.findByProduct(item.getProductBox().getProduct()).get();
-                stock.setQuantity(stock.getQuantity() + (item.getQuantityProductBox() * item.getProductBox().getQuantityProduct()));
+                stock.setQuantity(stock.getQuantity() + (item.getQuantityItem() * item.getProductBox().getQuantityProduct()));
                 stockRepository.save(stock);
             }
         });

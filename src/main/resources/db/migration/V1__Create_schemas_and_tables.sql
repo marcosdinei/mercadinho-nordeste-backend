@@ -61,8 +61,7 @@ CREATE TABLE IF NOT EXISTS compras.itens_comprados (
     compra_id INTEGER REFERENCES compras.compra,
     produto_id INTEGER REFERENCES produtos.produto,
     caixa_produto_id INTEGER REFERENCES produtos.caixa_produto,
-    quantidade_produto REAL,
-    quantidade_caixa REAL,
+    quantidade_item REAL NOT NULL,
     valor_unitario REAL NOT NULL
 );
 
@@ -94,7 +93,6 @@ CREATE TABLE IF NOT EXISTS vendas.itens_vendidos (
     venda_id INTEGER REFERENCES vendas.venda,
     produto_id INTEGER REFERENCES produtos.produto,
     caixa_produto_id INTEGER REFERENCES produtos.caixa_produto,
-    quantidade_produto REAL,
-    quantidade_caixa REAL,
+    quantidade_item REAL NOT NULL,
     valor_unitario REAL NOT NULL
 );

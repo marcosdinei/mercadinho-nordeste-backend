@@ -2,6 +2,7 @@ package br.com.mercadinhonordeste.controller;
 
 import br.com.mercadinhonordeste.entity.Product;
 import br.com.mercadinhonordeste.model.ApiResponse;
+import br.com.mercadinhonordeste.model.Item;
 import br.com.mercadinhonordeste.model.PaginatedData;
 import br.com.mercadinhonordeste.service.ProductService;
 import br.com.mercadinhonordeste.service.criteria.ProductCriteria;
@@ -30,8 +31,8 @@ public class ProductController {
     }
 
     @GetMapping("/{code}")
-    public ResponseEntity<ApiResponse<Product>> getProductByCode(@PathVariable String code) {
-        ApiResponse<Product> response = service.getProductByCode(code);
+    public ResponseEntity<ApiResponse<Item>> getProductByCode(@PathVariable String code) {
+        ApiResponse<Item> response = service.getProductByCode(code);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 

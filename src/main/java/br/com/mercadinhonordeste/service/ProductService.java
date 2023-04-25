@@ -4,6 +4,7 @@ import br.com.mercadinhonordeste.entity.Product;
 import br.com.mercadinhonordeste.entity.ProductBox;
 import br.com.mercadinhonordeste.entity.Stock;
 import br.com.mercadinhonordeste.model.ApiResponse;
+import br.com.mercadinhonordeste.model.Item;
 import br.com.mercadinhonordeste.model.PaginatedData;
 import br.com.mercadinhonordeste.model.Pagination;
 import br.com.mercadinhonordeste.repository.ProductBoxRepository;
@@ -50,12 +51,19 @@ public class ProductService {
         return response.of(HttpStatus.OK, "Produto atualizado com sucesso", repository.save(product));
     }
 
-    public ApiResponse<Product> getProductByCode(String code) {
-        ApiResponse<Product> response = new ApiResponse<>();
+    public ApiResponse<Item> getProductByCode(String code) {
+        ApiResponse<Item> response = new ApiResponse<>();
         Optional<Product> product = repository.findByCode(code);
-        if (product.isEmpty())
-            return response.of(HttpStatus.NOT_FOUND, "Produto não encontrado com o código informado");
-        return response.of(HttpStatus.OK, "Produto encontrado com sucesso", product.get());
+        Boolean box = false;
+        if (product.isEmpty()) {
+            product = repository.findByBoxCode(code);
+            if (product.isEmpty())
+                return response.of(HttpStatus.NOT_FOUND, "Produto não encontrado com o código informado");
+
+            box = true;
+        }
+        Item item = new Item(product.get(), box);
+        return response.of(HttpStatus.OK, "Produto encontrado com sucesso", item);
     }
 
     public ApiResponse<PaginatedData<Product>> listProducts(ProductCriteria criteria, Pageable pageable) {
