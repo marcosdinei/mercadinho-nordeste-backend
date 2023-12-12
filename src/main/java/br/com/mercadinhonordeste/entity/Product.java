@@ -28,4 +28,6 @@ public class Product {
     @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "product")
     @JsonManagedReference
     private ProductBox box;
+
+
 }

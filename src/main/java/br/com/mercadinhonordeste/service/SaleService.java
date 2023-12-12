@@ -46,15 +46,11 @@ public class SaleService {
 
         Sale savedSale = repository.save(sale);
         savedSale.getItems().forEach(item -> {
-            if (item.getProduct() != null) {
-                Stock stock = stockRepository.findByProduct(item.getProduct()).get();
+            Stock stock = stockRepository.findByProduct(item.getProduct()).get();
+            if (item.getIsBox())
+                stock.setQuantity(stock.getQuantity() - (item.getQuantityItem() * item.getProduct().getBox().getQuantityProduct()));
+            else
                 stock.setQuantity(stock.getQuantity() - item.getQuantityItem());
-                stockRepository.save(stock);
-            } else if (item.getProductBox() != null) {
-                Stock stock = stockRepository.findByProduct(item.getProductBox().getProduct()).get();
-                stock.setQuantity(stock.getQuantity() - (item.getQuantityItem() * item.getProductBox().getQuantityProduct()));
-                stockRepository.save(stock);
-            }
         });
 
         return response.of(HttpStatus.CREATED, "Venda cadastrada com sucesso", savedSale);
@@ -78,15 +74,12 @@ public class SaleService {
         }
 
         sale.get().getItems().forEach(item -> {
-            if (item.getProduct() != null) {
-                Stock stock = stockRepository.findByProduct(item.getProduct()).get();
+            Stock stock = stockRepository.findByProduct(item.getProduct()).get();
+            if (item.getIsBox())
+                stock.setQuantity(stock.getQuantity() + (item.getQuantityItem() * item.getProduct().getBox().getQuantityProduct()));
+            else
                 stock.setQuantity(stock.getQuantity() + item.getQuantityItem());
-                stockRepository.save(stock);
-            } else if (item.getProductBox() != null) {
-                Stock stock = stockRepository.findByProduct(item.getProductBox().getProduct()).get();
-                stock.setQuantity(stock.getQuantity() + (item.getQuantityItem() * item.getProductBox().getQuantityProduct()));
-                stockRepository.save(stock);
-            }
+            stockRepository.save(stock);
         });
 
         repository.deleteById(id);

@@ -21,9 +21,8 @@ public class SoldItems {
     @JoinColumn(name = "produto_id")
     private Product product;
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
-    @JoinColumn(name = "caixa_produto_id")
-    private ProductBox productBox;
+    @Column(name = "caixa_produto")
+    private Boolean isBox;
 
     @Column(name = "quantidade_item")
     private Double quantityItem;

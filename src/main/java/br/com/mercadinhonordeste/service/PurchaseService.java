@@ -29,15 +29,12 @@ public class PurchaseService {
         ApiResponse<Purchase> response = new ApiResponse<>();
         Purchase savedPurchase = repository.save(purchase);
         savedPurchase.getItems().forEach(item -> {
-            if (item.getProduct() != null) {
-                Stock stock = stockRepository.findByProduct(item.getProduct()).get();
+            Stock stock = stockRepository.findByProduct(item.getProduct()).get();
+            if (item.getIsBox())
+                stock.setQuantity(stock.getQuantity() + (item.getQuantityItem() * item.getProduct().getBox().getQuantityProduct()));
+            else
                 stock.setQuantity(stock.getQuantity() + item.getQuantityItem());
-                stockRepository.save(stock);
-            } else if (item.getProductBox() != null) {
-                Stock stock = stockRepository.findByProduct(item.getProductBox().getProduct()).get();
-                stock.setQuantity(stock.getQuantity() + (item.getQuantityItem() * item.getProductBox().getQuantityProduct()));
-                stockRepository.save(stock);
-            }
+            stockRepository.save(stock);
         });
         return response.of(HttpStatus.CREATED, "Compra cadastrada com sucesso", savedPurchase);
     }
@@ -50,15 +47,12 @@ public class PurchaseService {
             return response.of(HttpStatus.NOT_FOUND, "Nenhuma compra encontrada com o id informado");
 
         purchase.get().getItems().forEach(item -> {
-            if (item.getProduct() != null) {
-                Stock stock = stockRepository.findByProduct(item.getProduct()).get();
+            Stock stock = stockRepository.findByProduct(item.getProduct()).get();
+            if (item.getIsBox())
+                stock.setQuantity(stock.getQuantity() - (item.getQuantityItem() * item.getProduct().getBox().getQuantityProduct()));
+            else
                 stock.setQuantity(stock.getQuantity() - item.getQuantityItem());
-                stockRepository.save(stock);
-            } else if (item.getProductBox() != null) {
-                Stock stock = stockRepository.findByProduct(item.getProductBox().getProduct()).get();
-                stock.setQuantity(stock.getQuantity() - (item.getQuantityItem() * item.getProductBox().getQuantityProduct()));
-                stockRepository.save(stock);
-            }
+            stockRepository.save(stock);
         });
         repository.deleteById(id);
         return response.of(HttpStatus.OK, "Compra deletada com sucesso");

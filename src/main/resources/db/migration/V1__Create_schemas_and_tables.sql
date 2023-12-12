@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS compras.itens_comprados (
     id serial PRIMARY KEY,
     compra_id INTEGER REFERENCES compras.compra,
     produto_id INTEGER REFERENCES produtos.produto,
-    caixa_produto_id INTEGER REFERENCES produtos.caixa_produto,
+    caixa_produto BOOLEAN NOT NULL,
     quantidade_item REAL NOT NULL,
     valor_unitario REAL NOT NULL
 );
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS vendas.itens_vendidos (
     id serial PRIMARY KEY,
     venda_id INTEGER REFERENCES vendas.venda,
     produto_id INTEGER REFERENCES produtos.produto,
-    caixa_produto_id INTEGER REFERENCES produtos.caixa_produto,
+    caixa_produto BOOLEAN NOT NULL,
     quantidade_item REAL NOT NULL,
     valor_unitario REAL NOT NULL
 );
