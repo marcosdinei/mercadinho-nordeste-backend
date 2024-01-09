@@ -3,6 +3,7 @@ package br.com.mercadinhonordeste.service;
 import br.com.mercadinhonordeste.entity.Product;
 import br.com.mercadinhonordeste.entity.ProductBox;
 import br.com.mercadinhonordeste.entity.Stock;
+import br.com.mercadinhonordeste.exception.NotFoundExeption;
 import br.com.mercadinhonordeste.model.ApiResponse;
 import br.com.mercadinhonordeste.model.Item;
 import br.com.mercadinhonordeste.model.PaginatedData;
@@ -29,18 +30,15 @@ public class ProductService {
     private final StockRepository stockRepository;
     private final ProductBoxRepository boxRepository;
 
-    public ApiResponse<Product> saveProduct(Product product) {
-        ApiResponse<Product> response = new ApiResponse<>();
+    public Product saveProduct(Product product) {
         Product productSaved = repository.save(product);
         stockRepository.save(new Stock(null, productSaved, 0.0));
-        return response.of(HttpStatus.CREATED, "Produto cadastrado com sucesso", productSaved);
+        return productSaved;
     }
 
-    public ApiResponse<Product> updateProduct(Product product) {
-        ApiResponse<Product> response = new ApiResponse<>();
-
+    public Product updateProduct(Product product) {
         if (!repository.existsById(product.getId()))
-            return response.of(HttpStatus.NOT_FOUND, "Produto não encontrado com o id informado");
+            throw new NotFoundExeption("Produto não encontrado com o id informado");
 
         if (product.getBox() == null) {
             Optional<ProductBox> box = boxRepository.findByProductId(product.getId());
@@ -48,26 +46,23 @@ public class ProductService {
                 boxRepository.delete(box.get());
         }
 
-        return response.of(HttpStatus.OK, "Produto atualizado com sucesso", repository.save(product));
+        return repository.save(product);
     }
 
-    public ApiResponse<Item> getProductByCode(String code) {
-        ApiResponse<Item> response = new ApiResponse<>();
+    public Item getProductByCode(String code) {
         Optional<Product> product = repository.findByCode(code);
         Boolean box = false;
         if (product.isEmpty()) {
             product = repository.findByBoxCode(code);
             if (product.isEmpty())
-                return response.of(HttpStatus.NOT_FOUND, "Produto não encontrado com o código informado");
+                throw new NotFoundExeption("Produto não encontrado com o código informado");
 
             box = true;
         }
-        Item item = new Item(product.get(), box);
-        return response.of(HttpStatus.OK, "Produto encontrado com sucesso", item);
+        return new Item(product.get(), box);
     }
 
-    public ApiResponse<PaginatedData<Product>> listProducts(ProductCriteria criteria, Pageable pageable) {
-        ApiResponse<PaginatedData<Product>> response = new ApiResponse<>();
+    public PaginatedData<Product> listProducts(ProductCriteria criteria, Pageable pageable) {
         pageable = PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
@@ -75,10 +70,7 @@ public class ProductService {
         );
         Page<Product> products = repository.findAll(createSpecification(criteria), pageable);
         final Pagination pagination = Pagination.from(products, pageable);
-        return response.of(
-                HttpStatus.OK,
-                pagination.getTotalNumberOfElements().toString().concat(" produto(s) encontrado(s)"),
-                new PaginatedData<>(products.getContent(), pagination));
+        return new PaginatedData<>(products.getContent(), pagination);
     }
 
     private Specification<Product> createSpecification(ProductCriteria criteria) {
