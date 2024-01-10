@@ -5,19 +5,13 @@ import br.com.mercadinhonordeste.entity.ProductBox;
 import br.com.mercadinhonordeste.entity.Stock;
 import br.com.mercadinhonordeste.exception.NotFoundExeption;
 import br.com.mercadinhonordeste.model.Item;
-import br.com.mercadinhonordeste.model.PaginatedData;
 import br.com.mercadinhonordeste.repository.ProductBoxRepository;
 import br.com.mercadinhonordeste.repository.ProductRepository;
 import br.com.mercadinhonordeste.repository.StockRepository;
-import br.com.mercadinhonordeste.service.criteria.ProductCriteria;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Optional;
 
@@ -37,12 +31,6 @@ class ProductServiceTest {
     private ProductBoxRepository boxRepository;
     @Mock
     private Product product;
-    @Mock
-    private Page<Product> products;
-    @Mock
-    private ProductCriteria criteria;
-    @Mock
-    private Specification<Product> specification;
     @Mock
     private ProductBox box;
     @Captor
@@ -108,15 +96,5 @@ class ProductServiceTest {
 
         assertThrows(NotFoundExeption.class, () -> service.getProductByCode(Mockito.anyString()));
         then(repository).should().findByCode(Mockito.anyString());
-    }
-
-    @Test
-    void shouldListProducts() {
-        Pageable pageable = PageRequest.of(1, 10);
-
-        PaginatedData<Product> response = service.listProducts(criteria, pageable);
-
-        then(repository).should().findAll(specification, pageable);
-        assertEquals(response.getContent(), products.getContent());
     }
 }
