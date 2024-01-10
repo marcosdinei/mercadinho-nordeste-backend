@@ -1,6 +1,7 @@
 package br.com.mercadinhonordeste.service;
 
 import br.com.mercadinhonordeste.entity.Cash;
+import br.com.mercadinhonordeste.exception.NotFoundExeption;
 import br.com.mercadinhonordeste.model.ApiResponse;
 import br.com.mercadinhonordeste.model.PaginatedData;
 import br.com.mercadinhonordeste.model.Pagination;
@@ -22,22 +23,19 @@ import java.util.List;
 public class CashService {
     private final CashRepository repository;
 
-    public ApiResponse<Cash> initCash(Cash cash) {
-        ApiResponse<Cash> response = new ApiResponse<>();
+    public Cash initCash(Cash cash) {
         cash.setCurrentValue(cash.getInitialValue());
         cash.setInProgress(true);
-        return response.of(HttpStatus.CREATED, "Caixa iniciado", repository.save(cash));
+        return repository.save(cash);
     }
 
-    public ApiResponse<Cash> updateCash(Cash cash) {
-        ApiResponse<Cash> response = new ApiResponse<>();
+    public Cash updateCash(Cash cash) {
         if (!repository.existsById(cash.getId()))
-            return response.of(HttpStatus.NOT_FOUND, "Caixa não encontrado");
-        return response.of(HttpStatus.OK, "Caixa atualizado com sucesso", repository.save(cash));
+            throw new NotFoundExeption("Caixa não encontrado");
+        return repository.save(cash);
     }
 
-    public ApiResponse<PaginatedData<Cash>> listCashs(CashCriteria criteria, Pageable pageable) {
-        ApiResponse<PaginatedData<Cash>> response = new ApiResponse<>();
+    public PaginatedData<Cash> listCashs(CashCriteria criteria, Pageable pageable) {
         pageable = PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
@@ -45,10 +43,7 @@ public class CashService {
         );
         Page<Cash> cashPage = repository.findAll(createSpecification(criteria), pageable);
         final Pagination pagination = Pagination.from(cashPage, pageable);
-        return response.of(
-                HttpStatus.OK,
-                pagination.getTotalNumberOfElements().toString().concat(" caixa(s) encontrado(s)"),
-                new PaginatedData<>(cashPage.getContent(), pagination));
+        return new PaginatedData<>(cashPage.getContent(), pagination);
     }
 
     private Specification<Cash> createSpecification(CashCriteria criteria) {
