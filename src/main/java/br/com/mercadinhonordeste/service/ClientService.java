@@ -2,6 +2,7 @@ package br.com.mercadinhonordeste.service;
 
 import br.com.mercadinhonordeste.entity.Client;
 import br.com.mercadinhonordeste.entity.ClientPayment;
+import br.com.mercadinhonordeste.exception.NotFoundExeption;
 import br.com.mercadinhonordeste.model.ApiResponse;
 import br.com.mercadinhonordeste.model.PaginatedData;
 import br.com.mercadinhonordeste.model.Pagination;
@@ -23,34 +24,29 @@ public class ClientService {
     private final ClientRepository repository;
     private final ClientPaymentRepository paymentRepository;
 
-    public ApiResponse<Client> saveClient(Client client) {
-        ApiResponse<Client> response = new ApiResponse<>();
-        return response.of(HttpStatus.CREATED, "Cliente cadastrado com sucesso", repository.save(client));
+    public Client saveClient(Client client) {
+        return repository.save(client);
     }
 
-    public ApiResponse<Client> updateClient(Client client) {
-        ApiResponse<Client> response = new ApiResponse<>();
+    public Client updateClient(Client client) {
         if (!repository.existsById(client.getId()))
-            return response.of(HttpStatus.NOT_FOUND, "Cliente não encontrado");
-        return response.of(HttpStatus.OK, "Cliente atualizado com sucesso", repository.save(client));
+            throw new NotFoundExeption("Cliente não encontrado");
+        return repository.save(client);
     }
 
-    public ApiResponse<ClientPayment> savePayment(ClientPayment payment) {
-        ApiResponse<ClientPayment> response = new ApiResponse<>();
-
+    public ClientPayment savePayment(ClientPayment payment) {
         Optional<Client> client = repository.findById(payment.getClient().getId());
         if (client.isEmpty())
-            return response.of(HttpStatus.NOT_FOUND, "Cliente não encontrado com o id informado");
+            throw new NotFoundExeption("Cliente não encontrado com o id informado");
 
         Client clientToSave = client.get();
         clientToSave.setAmountToPay(clientToSave.getAmountToPay() - payment.getAmountPaid());
         payment.setClient(repository.save(clientToSave));
 
-        return response.of(HttpStatus.CREATED, "Pagamento registrado com sucesso", paymentRepository.save(payment));
+        return paymentRepository.save(payment);
     }
 
-    public ApiResponse<PaginatedData<Client>> listClients(String name, Pageable pageable) {
-        ApiResponse<PaginatedData<Client>> response = new ApiResponse<>();
+    public PaginatedData<Client> listClients(String name, Pageable pageable) {
         pageable = PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
@@ -58,25 +54,19 @@ public class ClientService {
         );
         Page<Client> clients = repository.findByNameContainingIgnoreCase(name, pageable);
         final Pagination pagination = Pagination.from(clients, pageable);
-        return response.of(
-                HttpStatus.OK,
-                pagination.getTotalNumberOfElements().toString().concat(" cliente(s) encontrado(s)"),
-                new PaginatedData<>(clients.getContent(), pagination));
+        return new PaginatedData<>(clients.getContent(), pagination);
     }
 
-    public ApiResponse<Client> getClientById(Integer id) {
-        ApiResponse<Client> response = new ApiResponse<>();
+    public Client getClientById(Integer id) {
         Optional<Client> client = repository.findById(id);
         if (client.isEmpty())
-            return response.of(HttpStatus.NOT_FOUND, "Cliente não encontrado com o id informado");
-        return response.of(HttpStatus.OK, "Cliente encontrado com sucesso", client.get());
+            throw new NotFoundExeption("Cliente não encontrado com o id informado");
+        return client.get();
     }
 
-    public ApiResponse<?> deleteClient(Integer id) {
-        ApiResponse<?> response = new ApiResponse<>();
+    public void deleteClient(Integer id) {
         if (!repository.existsById(id))
-            return response.of(HttpStatus.NOT_FOUND, "Cliente não encontrado com o id informado");
+            throw new NotFoundExeption("Cliente não encontrado com o id informado");
         repository.deleteById(id);
-        return response.of(HttpStatus.OK, "Cliente deletado com sucesso");
     }
 }
