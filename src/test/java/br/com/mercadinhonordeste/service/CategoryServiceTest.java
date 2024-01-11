@@ -29,8 +29,6 @@ class CategoryServiceTest {
 
     @Test
     void shouldSaveNewCategory() {
-        given(repository.save(category)).willReturn(category);
-
         service.saveCategory(category);
 
         then(repository).should().save(category);

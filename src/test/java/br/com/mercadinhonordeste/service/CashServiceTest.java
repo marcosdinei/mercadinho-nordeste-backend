@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -26,8 +27,6 @@ class CashServiceTest {
 
     @Test
     void shouldInitNewCash() {
-        given(repository.save(cash)).willReturn(cash);
-
         service.initCash(cash);
 
         then(repository).should().save(cash);
@@ -44,7 +43,7 @@ class CashServiceTest {
 
     @Test
     void shouldNotFindCashByIdOnUpdate() {
-        given(repository.existsById(cash.getId())).willReturn(false);
+        given(repository.existsById(Mockito.anyInt())).willReturn(false);
 
         assertThrows(NotFoundExeption.class, () -> service.updateCash(cash));
         then(repository).should().existsById(cash.getId());
