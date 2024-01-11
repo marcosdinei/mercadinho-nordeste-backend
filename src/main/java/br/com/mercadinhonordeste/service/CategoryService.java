@@ -15,14 +15,11 @@ import java.util.List;
 public class CategoryService {
     private final CategoryRepository repository;
 
-    public ApiResponse<Category> saveCategory(Category category) {
-        ApiResponse<Category> response = new ApiResponse<>();
-        return response.of(HttpStatus.CREATED, "Categoria cadastrada com sucesso", repository.save(category));
+    public Category saveCategory(Category category) {
+        return repository.save(category);
     }
 
-    public ApiResponse<List<Category>> listCategories(String name) {
-        ApiResponse<List<Category>> response = new ApiResponse<>();
-        List<Category> categories = repository.findByNameContainingIgnoreCase(name, Sort.by(Sort.Direction.ASC, "name"));
-        return response.of(HttpStatus.OK, "Categorias encontradas", categories);
+    public List<Category> listCategories(String name) {
+        return repository.findByNameContainingIgnoreCase(name, Sort.by(Sort.Direction.ASC, "name"));
     }
 }
